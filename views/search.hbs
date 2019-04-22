@@ -2,7 +2,7 @@
 <input type="text" placeholder="and give it a name" name='rakName'>
 <button type="submit">+</button>
 
-<form method="post">
+<form action='/search' method="post">
   <input type="text" placeholder="I'm interested in..." name='search'>
   <input type="checkbox" id="movies" name="movies">
   <label for="movies">Movies</label>
@@ -13,5 +13,7 @@
     <li>item</li>
   </ul>
   <button class="addRak" type="submit">save rak</button>
+
+  <div class="movies"></div>
 
 </form>
