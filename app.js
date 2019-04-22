@@ -17,13 +17,13 @@ const User = require('./models/user');
 const flash = require('connect-flash');
 
 mongoose
-  .connect('mongodb://localhost/raks-v1', { useNewUrlParser: true })
-  .then(x => {
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);
-  })
-  .catch(err => {
-    console.error('Error connecting to mongo', err);
-  });
+    .connect('mongodb://localhost/raks-v1', { useNewUrlParser: true })
+    .then(x => {
+        console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`);
+    })
+    .catch(err => {
+        console.error('Error connecting to mongo', err);
+    });
 
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
@@ -31,49 +31,49 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 const app = express();
 
 passport.serializeUser((user, cb) => {
-  cb(null, user._id);
+    cb(null, user._id);
 });
 
 passport.deserializeUser((id, cb) => {
-  User.findById(id, (err, user) => {
-    if (err) {
-      return cb(err);
-    }
-    cb(null, user);
-  });
+    User.findById(id, (err, user) => {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, user);
+    });
 });
 
 app.use(flash());
 passport.use(
-  new LocalStrategy(
-    {
-      passReqToCallback: true
-    },
-    (req, username, password, next) => {
-      User.findOne({ username }, (err, user) => {
-        if (err) {
-          return next(err);
-        }
-        if (!user) {
-          return next(null, false, { message: 'Incorrect username' });
-        }
-        if (!bcrypt.compareSync(password, user.password)) {
-          return next(null, false, { message: 'Incorrect password' });
-        }
+    new LocalStrategy(
+        {
+            passReqToCallback: true
+        },
+        (req, username, password, next) => {
+            User.findOne({ username }, (err, user) => {
+                if (err) {
+                    return next(err);
+                }
+                if (!user) {
+                    return next(null, false, { message: 'Incorrect username' });
+                }
+                if (!bcrypt.compareSync(password, user.password)) {
+                    return next(null, false, { message: 'Incorrect password' });
+                }
 
-        return next(null, user);
-      });
-    }
-  )
+                return next(null, user);
+            });
+        }
+    )
 );
 
 // Express-session middleware configuration
 app.use(
-  session({
-    secret: 'our-passport-local-strategy-app',
-    resave: true,
-    saveUninitialized: true
-  })
+    session({
+        secret: 'our-passport-local-strategy-app',
+        resave: true,
+        saveUninitialized: true
+    })
 );
 
 // Middleware Setup
@@ -88,11 +88,11 @@ app.use(passport.session());
 // Express View engine setup
 
 app.use(
-  require('node-sass-middleware')({
-    src: path.join(__dirname, 'public'),
-    dest: path.join(__dirname, 'public'),
-    sourceMap: true
-  })
+    require('node-sass-middleware')({
+        src: path.join(__dirname, 'public'),
+        dest: path.join(__dirname, 'public'),
+        sourceMap: true
+    })
 );
 
 app.set('views', path.join(__dirname, 'views'));
@@ -105,18 +105,37 @@ app.use('/', authRoutes);
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
-  .then(() => {
-    console.log('Connected to Mongo!');
-  })
-  .catch(err => {
-    console.error('Error connecting to mongo', err);
-  });
+    .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
+    .then(() => {
+        console.log('Connected to Mongo!');
+    })
+    .catch(err => {
+        console.error('Error connecting to mongo', err);
+    });
 
 // default value for title local
 app.locals.title = 'raks';
 
 const index = require('./routes/index');
 app.use('/', index);
+
+/* const searchForMovie = title => {
+    axios
+        .get(
+            `https://api.themoviedb.org/3/discover/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1a`
+        )
+        .then(response => {
+            const { data } = response;
+            const { title } = data;
+            console.log('Search results:', data);
+
+            document.getElementById('movie').innerText;
+        })
+        .catch(err => {
+            console.error(err);
+        });
+};
+ */
+/* searchForMovie(); */
 
 module.exports = app;
