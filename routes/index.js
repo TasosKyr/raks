@@ -21,9 +21,9 @@ router.post('/search', (req, res, next) => {
         )
         .then(response => {
             const { data } = response;
-            const { title } = data;
-            console.log('Search results:', data);
-            res.render('search', {});
+            console.log(data.results);
+            let results = data.results;
+            res.render('search', { results });
         })
         .catch(err => {
             console.error(err);

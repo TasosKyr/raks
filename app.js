@@ -119,23 +119,4 @@ app.locals.title = 'raks';
 const index = require('./routes/index');
 app.use('/', index);
 
-/* const searchForMovie = title => {
-    axios
-        .get(
-            `https://api.themoviedb.org/3/discover/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1a`
-        )
-        .then(response => {
-            const { data } = response;
-            const { title } = data;
-            console.log('Search results:', data);
-
-            document.getElementById('movie').innerText;
-        })
-        .catch(err => {
-            console.error(err);
-        });
-};
- */
-/* searchForMovie(); */
-
 module.exports = app;

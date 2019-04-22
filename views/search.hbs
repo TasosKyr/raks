@@ -17,3 +17,9 @@
   <div class="movies"></div>
 
 </form>
+
+
+{{#if results}}
+{{#each results}}
+<h1>{{this.title}}</h1>
+<img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img> {{/each}} {{/if}}
