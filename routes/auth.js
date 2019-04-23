@@ -1,11 +1,11 @@
 const express = require('express');
 const authRoutes = express.Router();
-const User = require('../models/user');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 const passport = require('passport');
 const ensureLogin = require('connect-ensure-login');
-//const router = express.Router();
+const MovieCollection = require('../models/MovieCollection');
 
 authRoutes.get('/signup', (req, res, next) => {
     res.render('auth/signup');
@@ -20,33 +20,51 @@ authRoutes.post('/signup', (req, res, next) => {
         return;
     }
 
-    User.findOne({ username })
-        .then(user => {
-            if (user !== null) {
-                res.render('auth/signup', { message: 'The username already exists' });
-                return;
+    User.findOne({ username }).then(user => {
+        if (user !== null) {
+            res.render('auth/signup', { message: 'The username already exists' });
+            return;
+        }
+
+        const salt = bcrypt.genSaltSync(bcryptSalt);
+        const hashPass = bcrypt.hashSync(password, salt);
+
+        const newUser = new User({
+            username,
+            password: hashPass
+        });
+
+        newUser.save((err, user) => {
+            console.log(user);
+            if (err) {
+                res.render('auth/signup', { message: 'Something went wrong' });
+            } else {
+                res.redirect('/search');
+                MovieCollection.create({
+                    name: 'Rak 1',
+                    _owner: user._id
+                });
             }
-
-            const salt = bcrypt.genSaltSync(bcryptSalt);
-            const hashPass = bcrypt.hashSync(password, salt);
-
-            const newUser = new User({
-                username,
-                password: hashPass
-            });
-
-            newUser.save(err => {
-                if (err) {
-                    res.render('auth/signup', { message: 'Something went wrong' });
-                } else {
+        });
+    });
+});
+/* newUser
+                .save()
+                .then(user => {
+                    MovieCollection.create({
+                        name: 'Rak 1',
+                        _owner: user_id
+                    });
                     res.redirect('/search');
-                }
-            });
+                })
+                .catch(err => {
+                    res.render('auth/signup', { message: 'Something went wrong' });
+                });
         })
         .catch(error => {
             next(error);
         });
-});
+}); */
 
 authRoutes.get('/login', (req, res, next) => {
     res.render('auth/login', { message: req.flash('error') });

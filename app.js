@@ -17,6 +17,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./models/user');
 const flash = require('connect-flash');
 
+mongoose.Promise = Promise;
 mongoose
     .connect('mongodb://localhost/raks-v1', { useNewUrlParser: true })
     .then(x => {
@@ -25,6 +26,16 @@ mongoose
     .catch(err => {
         console.error('Error connecting to mongo', err);
     });
+
+/* 
+mongoose
+    .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
+    .then(() => {
+        console.log('Connected to Mongo!');
+    })
+    .catch(err => {
+        console.error('Error connecting to mongo', err);
+    }); */
 
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
