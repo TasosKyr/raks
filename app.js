@@ -26,16 +26,6 @@ mongoose
         console.error('Error connecting to mongo', err);
     });
 
-/* 
-mongoose
-    .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
-    .then(() => {
-        console.log('Connected to Mongo!');
-    })
-    .catch(err => {
-        console.error('Error connecting to mongo', err);
-    }); */
-
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
@@ -92,12 +82,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 // Express-session middleware initialization
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Express View engine setup
-
 app.use(
     require('node-sass-middleware')({
         src: path.join(__dirname, 'public'),
@@ -119,5 +109,8 @@ app.locals.title = 'raks';
 
 const index = require('./routes/index');
 app.use('/', index);
+
+const createRak = require('./routes/create-rak');
+app.use('/', createRak);
 
 module.exports = app;

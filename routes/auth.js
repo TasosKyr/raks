@@ -39,11 +39,7 @@ authRoutes.post('/signup', (req, res, next) => {
             if (err) {
                 res.render('auth/signup', { message: 'Something went wrong' });
             } else {
-                res.redirect('/search');
-                MovieCollection.create({
-                    name: 'Rak 1',
-                    _owner: user._id
-                });
+                res.redirect('/create-rak');
             }
         });
     });
@@ -81,6 +77,7 @@ authRoutes.post(
 );
 
 authRoutes.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
+    console.log(req.user);
     res.render('profile', { user: req.user });
 });
 
