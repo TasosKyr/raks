@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 const passport = require('passport');
 const ensureLogin = require('connect-ensure-login');
+//const router = express.Router();
 
 authRoutes.get('/signup', (req, res, next) => {
     res.render('auth/signup');
@@ -72,6 +73,15 @@ function ensureAuthenticated(req, res, next) {
         res.redirect('/login');
     }
 }
+
+authRoutes.get('/google', passport.authenticate('google', { scope: ['profile'] }));
+authRoutes.get(
+    '/google/callback',
+    passport.authenticate('google', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
+);
 
 authRoutes.get('/logout', (req, res) => {
     req.logout();

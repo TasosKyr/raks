@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const collectionsSchema = new Schema({
+const moviesSchema = new Schema({
+    id: {
+        type: number
+    },
     title: {
         type: string
     },
@@ -16,6 +19,6 @@ const collectionsSchema = new Schema({
     }
 });
 
-const collection = mongoose.model('collections', collectionsSchema);
+const movie = mongoose.model('movie', moviesSchema);
 
-module.exports = collections;
+module.exports = movies;
