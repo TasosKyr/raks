@@ -16,6 +16,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/User');
 const flash = require('connect-flash');
 
+mongoose.Promise = Promise;
 mongoose
     .connect('mongodb://localhost/raks-v1', { useNewUrlParser: true })
     .then(x => {
@@ -24,6 +25,16 @@ mongoose
     .catch(err => {
         console.error('Error connecting to mongo', err);
     });
+
+/* 
+mongoose
+    .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
+    .then(() => {
+        console.log('Connected to Mongo!');
+    })
+    .catch(err => {
+        console.error('Error connecting to mongo', err);
+    }); */
 
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
@@ -102,16 +113,6 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use('/', authRoutes);
 
 // login routes
-
-mongoose.Promise = Promise;
-mongoose
-    .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
-    .then(() => {
-        console.log('Connected to Mongo!');
-    })
-    .catch(err => {
-        console.error('Error connecting to mongo', err);
-    });
 
 // default value for title local
 app.locals.title = 'raks';

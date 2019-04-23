@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-
-let tempId = 0;
+const MovieCollection = require('../models/MovieCollection');
+let collectionIdArr = [];
 
 /* Get landing-page */
 router.get('/', (req, res, next) => {
@@ -22,8 +22,6 @@ router.post('/search', (req, res, next) => {
             }&page=1&include_adult=false`
         )
         .then(response => {
-            tempId = response.data.results[0].id;
-            console.log(tempId, 'tempid');
             const { data } = response;
             console.log(data.results);
             let results = data.results;
@@ -127,16 +125,21 @@ const getIdName = arrIds => {
     return genreArray;
 };
 
-// Add movies to the cart
-router.post('/raks/add', (req, res) => {
-    const collectionIdArr =
-        //.then(() => {
-        res.render('/search');
-    //})
-    //.catch(err => {
-    //console.error('Error while adding author', err);
-    //});
+// Create collection
+router.post('/rak/create', (req, res) => {
+    const { name, description } = req.body;
+    MovieCollection.create({
+        name,
+        description
+    })
+        .then(() => {
+            res.redirect('/search');
+        })
+        .catch(err => {
+            console.error('Error while adding author', err);
+        });
 });
-//let addToCart() =
+
+// Add movies to the cart
 
 module.exports = router;

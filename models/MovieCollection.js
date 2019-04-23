@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const collectionsSchema = new Schema({
-    title: {
-        type: string,
+    name: {
+        type: String,
         required: true
     },
     description: {
-        type: string
+        type: String
     },
     image: {
-        type: string
+        type: String
     },
     movie: [
         {
