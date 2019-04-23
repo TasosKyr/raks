@@ -1,6 +1,5 @@
 <h2>Create a rak</h2>
 <input type="text" placeholder="and give it a name" name='rakName'>
-<button type="submit">+</button>
 
 <form action='/search' method="post">
   <input type="text" placeholder="I'm interested in..." name='search'>
@@ -21,5 +20,16 @@
 
 {{#if results}}
 {{#each results}}
-<h1>{{this.title}}</h1>
-<img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img> {{/each}} {{/if}}
+<div class="itemResults">
+  <h3>{{this.title}}</h3>
+  {{!-- {{#if results}}
+{{#each results}} --}}
+  <p>{{this.genre_names}}</p>
+  {{!-- {{/each}}
+{{/if}} --}}
+  <p>{{this.vote_average}}</p>
+  <p>{{this.overview}}</p>
+  <img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img>
+  <button type="submit">+</button>
+</div>
+{{/each}} {{/if}}
