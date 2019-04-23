@@ -13,6 +13,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./models/user');
 const flash = require('connect-flash');
 
@@ -85,6 +86,30 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: '890495513413-sjmkdsk1tvao47blb884be6dh5hjj6ou.apps.googleusercontent.com',
+            clientSecret: 'lw4n4htR-OkJ4WDH9AD4fUNH',
+            callbackURL: 'http://localhost:3000/google/callback'
+        },
+        (request, accessToken, refreshToken, profile, done) => {
+            console.log('profile: ', profile);
+            User.findOne({ googleId: profile.id })
+                .then(user => {
+                    if (user) return done(null, user);
+                    User.create({ googleId: profile.id }).then(newUser => {
+                        done(null, newUser);
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    done(err);
+                });
+        }
+    )
+);
+
 // Express View engine setup
 
 app.use(
@@ -104,14 +129,14 @@ app.use('/', authRoutes);
 // login routes
 
 mongoose.Promise = Promise;
-mongoose
-    .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
-    .then(() => {
-        console.log('Connected to Mongo!');
-    })
-    .catch(err => {
-        console.error('Error connecting to mongo', err);
-    });
+// mongoose
+//     .connect('mongodb://localhost/basic-auth', { useNewUrlParser: true })
+//     .then(() => {
+//         console.log('Connected to Mongo!');
+//     })
+//     .catch(err => {
+//         console.error('Error connecting to mongo', err);
+//     });
 
 // default value for title local
 app.locals.title = 'raks';
