@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
+let tempId = 0;
+
 /* Get landing-page */
 router.get('/', (req, res, next) => {
     res.render('index');
@@ -20,6 +22,8 @@ router.post('/search', (req, res, next) => {
             }&page=1&include_adult=false`
         )
         .then(response => {
+            tempId = response.data.results[0].id;
+            console.log(tempId, 'tempid');
             const { data } = response;
             console.log(data.results);
             let results = data.results;
@@ -116,12 +120,23 @@ const genreIds = [
 ];
 
 const getIdName = arrIds => {
-    // genre_ids: [ 10770, 14, 16, 27, 28, 53, 878 ],
     let genreArray = arrIds.map(id => {
         let foundObj = genreIds.find(el => el.id === id);
         return foundObj.name;
     });
     return genreArray;
 };
+
+// Add movies to the cart
+router.post('/raks/add', (req, res) => {
+    const collectionIdArr =
+        //.then(() => {
+        res.render('/search');
+    //})
+    //.catch(err => {
+    //console.error('Error while adding author', err);
+    //});
+});
+//let addToCart() =
 
 module.exports = router;
