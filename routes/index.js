@@ -128,7 +128,7 @@ const getIdName = arrIds => {
 // Create collection
 router.post('/rak/create', (req, res) => {
     const { name, description } = req.body;
-    MovieCollection.create({
+    MovieCollection.findOne({ _id })({
         name,
         description
     })
