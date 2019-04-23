@@ -127,13 +127,12 @@ const getIdName = arrIds => {
 
 // Create collection
 router.post('/rak/create', (req, res) => {
-  const { name, description } = req.body;
-  MovieCollection.create({
-    name,
-    description
-  })
-    .then(() => {
-      res.redirect('/search');
+
+    const { name, description } = req.body;
+    MovieCollection.findOne({ _id })({
+        name,
+        description
+
     })
     .catch(err => {
       console.error('Error while adding author', err);

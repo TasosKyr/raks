@@ -17,7 +17,12 @@ const collectionsSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Movie'
         }
-    ]
+    ],
+    _owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 });
 
 const MovieCollection = mongoose.model('MovieCollection', collectionsSchema);
