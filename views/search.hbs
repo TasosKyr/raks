@@ -1,22 +1,27 @@
-<h2>Create a rak</h2>
-<input type="text" placeholder="and give it a name" name='rakName'>
+<div class="rakCreation">
+  <h2>Create a rak</h2>
+  <form action='/rak/create' method="post">
+    <input type="text" placeholder="rak name" name='name'>
+    <input type="text" placeholder="rak description" name='description'>
+    <button class="rakCreation" type="submit">Create</button>
+    <h3>Your rak:</h3>
+    <ul class="cart">
+      <li>Movies...</li>
+    </ul>
+  </form>
+</div>
 
-<form action='/search' method="post">
-  <input type="text" placeholder="I'm interested in..." name='search'>
-  <input type="checkbox" id="movies" name="movies">
-  <label for="movies">Movies</label>
-  <button class="itemSearch" type="submit">Search</button>
-  <button class="addItem" type="submit">Add to rak</button>
-  <h3>Your rak</h3>
-  <ul class="cart">
-    <li>item</li>
-  </ul>
-  <button class="addRak" type="submit">save rak</button>
-
-  <div class="movies"></div>
-
-</form>
-
+<div class="search">
+  <h3>Search</h3>
+  <form action='/search' method="post">
+    <input type="text" placeholder="I'm interested in..." name='search'>
+    <input type="checkbox" id="movies" name="movies">
+    <label for="movies">Movies</label>
+    <button class="itemSearch" type="submit">Search</button>
+    <button class="addRak" type="submit">Save your rak</button>
+    <div class="movies"></div>
+  </form>
+</div>
 
 {{#if results}}
 {{#each results}}
@@ -30,5 +35,7 @@
   <p>{{this.vote_average}}</p>
   <p>{{this.overview}}</p>
   <img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img>
-  <form action="/raks/add" method="post">
-    <button type="submit" </button>>+ </button> </form> </div> {{/each}} {{/if}}
+  <form action="/movie/add" method="post">
+    <button class="addItem" type="submit">Add movie to your rak</button>
+  </form>
+</div> {{/each}} {{/if}}
