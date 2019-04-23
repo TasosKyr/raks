@@ -1,7 +1,12 @@
-This is the profile page!
+<h2>{{user.username}}'s rak-room</h2>
 
 {{#if user}}
-<div>
-  <a href="/">Index</a>
-</div>
-{{/if}}
+<img{{data}}>
+  <div>
+    <ul>Your raks:
+      <li>item</li>
+    </ul>
+    <button id="editRak" type="submit">edit</button>
+  </div>
+  {{/if}}
+  <button id="goToSearch" type="submit">Search Page</button>
