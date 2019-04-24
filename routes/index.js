@@ -4,13 +4,6 @@ const axios = require('axios');
 const MovieCollection = require('../models/MovieCollection');
 const Movie = require('../models/Movie');
 const ensureLogin = require('connect-ensure-login');
-let results;
-let movieId;
-let movieTitle;
-let movieVoteAverage;
-let movieOverview;
-let moviePosterPath;
-let collectionIdArr = [];
 
 /* Get landing-page */
 router.get('/', (req, res, next) => {
@@ -48,7 +41,7 @@ router.post('/search/:collectionId/:collectionName', (req, res, next) => {
         )
         .then(response => {
             const { data } = response;
-            results = data.results;
+            let results = data.results;
             console.log(results);
             data.results.forEach(el => {
                 const genre_ids = el.genre_ids;
@@ -150,13 +143,13 @@ const getIdName = arrIds => {
     return genreArray;
 };
 
-// Create movie in the database and add it to the cart
-router.post('/search/:collId/:collName', (req, res) => {
-    const { collId } = req.params;
-    const { collName } = req.params;
-    const { title, genre_names, vote_average, overview, poster_path } = req.body;
-    Movie.updateOne(
-        id,
+// Create movie in the database and add it to the rak
+router.post('/add/:collId/:collName', (req, res) => {
+    const { collId, collName } = req.params;
+    const { id, title, genre_names, vote_average, overview, poster_path } = req.body;
+    console.log(req.body);
+    Movie.findOneAndUpdate(
+        { id: id },
         {
             id,
             title,
@@ -166,11 +159,11 @@ router.post('/search/:collId/:collName', (req, res) => {
             poster_path,
             _movieCollection: collId
         },
-        { $upsert: true }
+        { upsert: true, new: true }
     )
         .then(() => {
             console.log('Movie successfully created');
-            res.redirect(`/search/${collId}`);
+            res.redirect(`/search/${collId}/${collName}`);
         })
         .catch(err => {
             console.error('Error while creating movie', err);

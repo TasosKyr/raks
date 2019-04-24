@@ -34,7 +34,7 @@
   <p>{{this.overview}}</p>
   <img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img>
 
-  <form action='/search/{{../collectionId}}/{{../collectionName}}' method="post">
+  <form action='/add/{{../collectionId}}/{{../collectionName}}' method="post">
     <input type="hidden" name="id" value="{{this.id}}">
     <input type="hidden" name="title" value="{{this.title}}">
     <input type="hidden" name="genre_names" value="{{this.genre_names}}">
