@@ -32,7 +32,6 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
 // Get API search results
 router.post('/search/:collectionId/:collectionName', (req, res, next) => {
     const { collectionId, collectionName } = req.params;
-    console.log(req.user);
     axios
         .get(
             `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
@@ -160,14 +159,17 @@ router.post('/add/:collId/:collName', (req, res) => {
             _movieCollection: collId
         },
         { upsert: true, new: true }
-    )
-        .then(() => {
-            console.log('Movie successfully created');
-            res.redirect(`/search/${collId}/${collName}`);
-        })
-        .catch(err => {
-            console.error('Error while creating movie', err);
-        });
+    ).then(() => {
+        console.log('Movie successfully created');
+        MovieCollection.findOne({ _id: collId })
+            .then(MovieColl => {
+                res.render('search', { MovieColl });
+                //res.redirect(`/search/${collId}/${collName}`, { MovieColl });
+            })
+            .catch(err => {
+                console.error('Error while creating movie', err);
+            });
+    });
 });
 
 module.exports = router;
