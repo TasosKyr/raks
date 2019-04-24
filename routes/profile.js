@@ -14,14 +14,8 @@ const User = require('../models/User');
 // renderId = new Identicon(hash, { format: 'svg' }).toString();
 
 
-//User rak rendering
-MovieCollection.find({ _owner: _id }
-  .then(collections => {
-    res.render('profile', { collections })
-  }))
-  .catch(err => {
-    console.error("failed to render user collection", err)
-  })
+// User rak rendering
+
 
 // cart creation
 profileRouter.post('/search', (req, res, next) => {
