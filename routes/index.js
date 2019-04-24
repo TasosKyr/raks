@@ -4,10 +4,14 @@ const axios = require('axios');
 const MovieCollection = require('../models/MovieCollection');
 const Movie = require('../models/Movie');
 const ensureLogin = require('connect-ensure-login');
+const User = require('../models/User');
 
 /* Get landing-page */
 router.get('/', (req, res, next) => {
-    res.render('index');
+    let data = {
+        layout: false
+    }
+    res.render('index', data);
 });
 
 // Get rak creation page
