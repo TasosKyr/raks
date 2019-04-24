@@ -25,8 +25,16 @@ router.get('/search/:collectionId/:collectionName', ensureLogin.ensureLoggedIn()
 
 //Get profile page
 router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
-    console.log(req.user);
-    res.render('profile', { user: req.user });
+    MovieCollection.find({ _owner: req.user._id })
+        .then(collections => {
+            console.log({ collections })
+            res.render('profile', { collections, user: req.user })
+        })
+        .catch(err => {
+            console.error("failed to render user collection", err)
+        })
+
+
 });
 
 // Get API search results
@@ -35,7 +43,7 @@ router.post('/search/:collectionId/:collectionName', (req, res, next) => {
     axios
         .get(
             `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                req.body.search
+            req.body.search
             }&page=1&include_adult=false`
         )
         .then(response => {

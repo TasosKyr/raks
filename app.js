@@ -148,4 +148,7 @@ app.use('/', index);
 const createRak = require('./routes/create-rak');
 app.use('/', createRak);
 
+const profileRouter = require('./routes/profile')
+app.use('/', profileRouter)
+
 module.exports = app;
