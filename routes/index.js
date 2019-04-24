@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const MovieCollection = require('../models/MovieCollection');
+const Movie = require('../models/Movie');
 const ensureLogin = require('connect-ensure-login');
+let movieId;
+let movieTitle;
+let movieVoteAverage;
+let movieOverview;
+let moviePosterPath;
 let collectionIdArr = [];
 
 /* Get landing-page */
@@ -11,19 +17,27 @@ router.get('/', (req, res, next) => {
 });
 
 // Get rak creation page
-router.get('/create-rak', (req, res, next) => {
+router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
     res.render('create-rak');
 });
 
 //Get search page
-router.get('/search', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    MovieCollection.find({ _owner: req.user._id }).then(collections => {
-        res.render('search');
+router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    const { collectionId } = req.params;
+    MovieCollection.findOne({ _id: collectionId }).then(MovieColl => {
+        res.render('search', { MovieColl });
     });
 });
 
+//Get profile page
+router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
+    console.log(req.user);
+    res.render('profile', { user: req.user });
+});
+
 // Get API search results
-router.post('/search', (req, res, next) => {
+router.post('/search/:collectionId', (req, res, next) => {
+    const { collectionId } = req.params;
     console.log(req.user);
     axios
         .get(
@@ -40,7 +54,7 @@ router.post('/search', (req, res, next) => {
                 const genre_names = getIdName(genre_ids);
                 el.genre_names = genre_names;
             });
-            res.render('search', { results });
+            res.render('search', { results, collectionId });
         })
         .catch(err => {
             console.error(err);
@@ -136,12 +150,21 @@ const getIdName = arrIds => {
 };
 
 // Add movies to the cart
-router.post('/movies/add', (req, res) => {
-    const { title, genre_names, vote_average, overview, poster_path } = req.body;
-    Movie.create({ title, genre_names, vote_average, overview, poster_path })
+router.post('/movie/:collId', (req, res) => {
+    const { collId } = req.params;
+    const { title, genre_names, vote_average, overview, poster_path } = data.results;
+    Movie.create({
+        id,
+        title,
+        genre_names,
+        vote_average,
+        overview,
+        poster_path,
+        _movieCollection: collId
+    })
         .then(() => {
             console.log('Movie successfully created');
-            res.redirect('/search/:movieCollectionId');
+            res.redirect(`/search/${collId}`);
         })
         .catch(err => {
             console.error('Error while creating movie', err);
