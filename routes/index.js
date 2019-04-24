@@ -16,11 +16,35 @@ router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
     res.render('create-rak');
 });
 
-//Get search page
-router.get('/search/:collectionId/:collectionName', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    const { collectionId, collectionName } = req.params;
+// Get API search results
+router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    const { collectionId } = req.params;
     MovieCollection.findOne({ _id: collectionId }).then(MovieColl => {
-        res.render('search', { MovieColl });
+        axios
+            .get(
+                `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
+                req.query.search
+                }&page=1&include_adult=false`
+            )
+            .then(response => {
+                const { data } = response;
+                let results = data.results;
+                console.log(results);
+                data.results.forEach(el => {
+                    const genre_ids = el.genre_ids;
+                    const genre_names = getIdName(genre_ids);
+                    el.genre_names = genre_names;
+                });
+                console.log('render');
+                res.render('search', {
+                    query: req.query.search,
+                    results,
+                    MovieColl
+                });
+            })
+            .catch(err => {
+                console.error(err);
+            });
     });
 });
 
@@ -28,8 +52,8 @@ router.get('/search/:collectionId/:collectionName', ensureLogin.ensureLoggedIn()
 router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
     MovieCollection.find({ _owner: req.user._id })
         .then(collections => {
-            console.log({ collections })
-            res.render('profile', { collections, user: req.user })
+            console.log({ collections });
+            res.render('profile', { collections, user: req.user });
         })
         .catch(err => {
             console.error("failed to render user collection", err)
@@ -162,9 +186,9 @@ const getIdName = arrIds => {
     return genreArray;
 };
 
-// Create movie in the database and add it to the rak
-router.post('/add/:collId/:collName', (req, res) => {
-    const { collId, collName } = req.params;
+// Create movie in the database, add it to the rak and recalls API for results
+router.post('/add/:collId', (req, res) => {
+    const { collId } = req.params;
     const { id, title, genre_names, vote_average, overview, poster_path } = req.body;
     console.log(req.body);
     Movie.findOneAndUpdate(
@@ -180,15 +204,32 @@ router.post('/add/:collId/:collName', (req, res) => {
         },
         { upsert: true, new: true }
     ).then(() => {
+        MovieCollection.findOne({ _id: collId }).then(MovieColl => {
+            axios
+                .get(
+                    `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
+                    req.query.search
+                    }&page=1&include_adult=false`
+                )
+                .then(response => {
+                    const { data } = response;
+                    let results = data.results;
+                    console.log(results);
+                    data.results.forEach(el => {
+                        const genre_ids = el.genre_ids;
+                        const genre_names = getIdName(genre_ids);
+                        el.genre_names = genre_names;
+                    });
+                    console.log('render');
+                    /* res.render('search', {
+                        query: req.query.search,
+                        results,
+                        MovieColl
+                    }); */
+                    res.render('search', { MovieColl, results });
+                });
+        });
         console.log('Movie successfully created');
-        MovieCollection.findOne({ _id: collId })
-            .then(MovieColl => {
-                res.render('search', { MovieColl });
-                //res.redirect(`/search/${collId}/${collName}`, { MovieColl });
-            })
-            .catch(err => {
-                console.error('Error while creating movie', err);
-            });
     });
 });
 

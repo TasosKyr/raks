@@ -16,7 +16,7 @@ router.post('/rak/create', ensureLogin.ensureLoggedIn(), (req, res) => {
     })
         .then(movieColl => {
             console.log('Well done! Rak successfully created!', movieColl);
-            res.redirect(`/search/${movieColl._id}/${movieColl.name}`);
+            res.redirect(`/search/${movieColl._id}`);
         })
         .catch(err => {
             console.error('Oops! Error while creating the rak', err);

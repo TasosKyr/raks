@@ -11,7 +11,7 @@
 
 <div class="search">
   <h3>Search</h3>
-  <form action='/search/{{MovieColl._id}}/{{MovieColl.name}}' method="post">
+  <form action='/search/{{MovieColl._id}}' method="get">
     <input type="text" placeholder="I'm interested in..." name='search'>
     <input type="checkbox" id="movies" name="movies">
     <label for="movies">Movies</label>
@@ -20,13 +20,13 @@
   </form>
 
 </div>
-{{collectionId}}
+{{MovieColl._id}}
 {{#if results}}
 {{#each results}}
 <div class="itemResults">
   <h3>{{this.title}}</h3>
   {{!-- {{#if results}}
-{{#each results}} --}}
+{{#each ressults}} --}}
   <p>{{this.genre_names}}</p>
   {{!-- {{/each}}
 {{/if}} --}}
@@ -34,7 +34,8 @@
   <p>{{this.overview}}</p>
   <img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img>
 
-  <form action='/add/{{../collectionId}}/{{../collectionName}}' method="post">
+  <form action='/add/{{../MovieColl._id}}' method="post">
+    <input type="hidden" name="query" value="{{../query}}">
     <input type="hidden" name="id" value="{{this.id}}">
     <input type="hidden" name="title" value="{{this.title}}">
     <input type="hidden" name="genre_names" value="{{this.genre_names}}">
