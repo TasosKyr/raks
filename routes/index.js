@@ -12,6 +12,7 @@ router.get('/', (req, res, next) => {
 
 // Get rak creation page
 router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    console.log("hello from create rak")
     res.render('create-rak');
 });
 
@@ -33,9 +34,20 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
         .catch(err => {
             console.error("failed to render user collection", err)
         })
-
-
 });
+
+router.post("/profile/:id/delete", ensureLogin.ensureLoggedIn(), (req, res) => {
+    console.log("hello from delete route")
+    let collectionId = req.params.id
+    MovieCollection.deleteOne({ _id: collectionId })
+        .then(collection => {
+            console.log(collection)
+            res.redirect('/profile')
+        })
+        .catch(err => {
+            console.error("failed to render user collection", err)
+        })
+})
 
 // Get API search results
 router.post('/search/:collectionId/:collectionName', (req, res, next) => {

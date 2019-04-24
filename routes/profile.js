@@ -22,8 +22,8 @@ profileRouter.post('/search', (req, res, next) => {
   });
 })
 //profile CRUD
-profileRouter.get('/:id',(req,res)=>{
-  MovieCollection.findById(req.params.id,(err,doc)=>{})
+profileRouter.get('/:id', (req, res) => {
+  MovieCollection.findById(req.params.id, (err, doc) => { })
 })
 
 module.exports = profileRouter;
