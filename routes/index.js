@@ -4,6 +4,7 @@ const axios = require('axios');
 const MovieCollection = require('../models/MovieCollection');
 const Movie = require('../models/Movie');
 const ensureLogin = require('connect-ensure-login');
+let results;
 let movieId;
 let movieTitle;
 let movieVoteAverage;
@@ -22,8 +23,8 @@ router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 //Get search page
-router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    const { collectionId } = req.params;
+router.get('/search/:collectionId/:collectionName', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    const { collectionId, collectionName } = req.params;
     MovieCollection.findOne({ _id: collectionId }).then(MovieColl => {
         res.render('search', { MovieColl });
     });
@@ -36,8 +37,8 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
 });
 
 // Get API search results
-router.post('/search/:collectionId', (req, res, next) => {
-    const { collectionId } = req.params;
+router.post('/search/:collectionId/:collectionName', (req, res, next) => {
+    const { collectionId, collectionName } = req.params;
     console.log(req.user);
     axios
         .get(
@@ -47,14 +48,14 @@ router.post('/search/:collectionId', (req, res, next) => {
         )
         .then(response => {
             const { data } = response;
-            console.log(data.results);
-            let results = data.results;
+            results = data.results;
+            console.log(results);
             data.results.forEach(el => {
                 const genre_ids = el.genre_ids;
                 const genre_names = getIdName(genre_ids);
                 el.genre_names = genre_names;
             });
-            res.render('search', { results, collectionId });
+            res.render('search', { results, collectionId, collectionName });
         })
         .catch(err => {
             console.error(err);
@@ -149,19 +150,24 @@ const getIdName = arrIds => {
     return genreArray;
 };
 
-// Add movies to the cart
-router.post('/movie/:collId', (req, res) => {
+// Create movie in the database and add it to the cart
+router.post('/search/:collId/:collName', (req, res) => {
     const { collId } = req.params;
-    const { title, genre_names, vote_average, overview, poster_path } = data.results;
-    Movie.create({
+    const { collName } = req.params;
+    const { title, genre_names, vote_average, overview, poster_path } = req.body;
+    Movie.updateOne(
         id,
-        title,
-        genre_names,
-        vote_average,
-        overview,
-        poster_path,
-        _movieCollection: collId
-    })
+        {
+            id,
+            title,
+            genre_names,
+            vote_average,
+            overview,
+            poster_path,
+            _movieCollection: collId
+        },
+        { $upsert: true }
+    )
         .then(() => {
             console.log('Movie successfully created');
             res.redirect(`/search/${collId}`);
