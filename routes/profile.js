@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose')
 const profileRouter = express.Router();
 const Identicon = require("identicon")
 const jsSHA = require("jssha");
@@ -20,3 +19,5 @@ profileRouter.post('/search', (req, res, next) => {
     _owner: user._id
   });
 })
+
+module.exports = profileRouter;
