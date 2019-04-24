@@ -12,10 +12,12 @@ const collectionsSchema = new Schema({
     image: {
         type: String
     },
-    movie: {
-        type: Schema.Types.ObjectId,
-        ref: 'Movie'
-    },
+    _movie: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Movie'
+        }
+    ],
     _owner: {
         type: Schema.Types.ObjectId,
         ref: 'User',

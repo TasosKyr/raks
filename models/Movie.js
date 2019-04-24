@@ -3,21 +3,26 @@ const Schema = mongoose.Schema;
 
 const moviesSchema = new Schema({
     id: {
-        type: number,
+        type: Number,
         required: true
     },
     title: {
-        type: string,
+        type: String,
         required: true
     },
     rating: {
-        type: number
+        type: Number
     },
     description: {
-        type: string
+        type: String
     },
     image: {
-        type: string
+        type: String
+    },
+    _movieCollection: {
+        type: Schema.Types.ObjectId,
+        ref: 'MovieCollection',
+        required: true
     }
 });
 
