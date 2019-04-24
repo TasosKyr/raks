@@ -3,7 +3,14 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
     {
-        username: String,
+        /* _id: {
+            type: String,
+            required: true
+        }, */
+        username: {
+            type: String,
+            required: true
+        },
         googleId: String,
         password: String,
         movieCollection: [

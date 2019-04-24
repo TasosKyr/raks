@@ -8,7 +8,10 @@ const ensureLogin = require('connect-ensure-login');
 const MovieCollection = require('../models/MovieCollection');
 
 authRoutes.get('/signup', (req, res, next) => {
-    res.render('auth/signup');
+    let data = {
+        layout: false
+    }
+    res.render('auth/signup', data);
 });
 
 authRoutes.post('/signup', (req, res, next) => {
@@ -39,31 +42,20 @@ authRoutes.post('/signup', (req, res, next) => {
             if (err) {
                 res.render('auth/signup', { message: 'Something went wrong' });
             } else {
-                res.redirect('/create-rak');
+                req.login(user, () => {
+                    res.redirect('/create-rak');
+                });
             }
         });
     });
 });
-/* newUser
-                .save()
-                .then(user => {
-                    MovieCollection.create({
-                        name: 'Rak 1',
-                        _owner: user_id
-                    });
-                    res.redirect('/search');
-                })
-                .catch(err => {
-                    res.render('auth/signup', { message: 'Something went wrong' });
-                });
-        })
-        .catch(error => {
-            next(error);
-        });
-}); */
 
 authRoutes.get('/login', (req, res, next) => {
-    res.render('auth/login', { message: req.flash('error') });
+    let data = {
+        layout: false
+    }
+    res.render('auth/login', data);
+    // { message: req.flash('error') }
 });
 
 authRoutes.post(
@@ -75,11 +67,6 @@ authRoutes.post(
         passReqToCallback: true
     })
 );
-
-authRoutes.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
-    console.log(req.user);
-    res.render('profile', { user: req.user });
-});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
