@@ -8,7 +8,10 @@ const ensureLogin = require('connect-ensure-login');
 const MovieCollection = require('../models/MovieCollection');
 
 authRoutes.get('/signup', (req, res, next) => {
-    res.render('auth/signup');
+    let data = {
+        layout: false
+    }
+    res.render('auth/signup', data);
 });
 
 authRoutes.post('/signup', (req, res, next) => {
@@ -48,8 +51,11 @@ authRoutes.post('/signup', (req, res, next) => {
 });
 
 authRoutes.get('/login', (req, res, next) => {
-    res.render('auth/login', { message: req.flash('error') });
-
+    let data = {
+        layout: false
+    }
+    res.render('auth/login', data);
+    // { message: req.flash('error') }
 });
 
 authRoutes.post(
