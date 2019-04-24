@@ -5,12 +5,15 @@
   {{renderId}}
 </div>
 <div>
-  {{#each collections}}
   <div class="profileRak">
-    <p>a rak</p>
+    {{#each collections}}
+    <p>{{name}}</p>
+    <p>{{description}}</p>
+    <p>{{_movie}}</p>
+    <button id="editRak" type="submit">x</button>
+
   </div>{{/each}}
-  <button id="editRak" type="submit">edit</button>
-  <form action="/edit">
+  <form action="/newRak">
     <button id="newRak" type="submit">new rak</button>
   </form>
   <form action="/search/{{this.moviecollections}}" method="GET">
