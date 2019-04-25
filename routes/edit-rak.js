@@ -18,12 +18,13 @@ router.get('/:id', ensureLogin.ensureLoggedIn(), (req, res) => {
 });
 
 // Update new rak
-router.post('/:collId/:movieId/update', ensureLogin.ensureLoggedIn(), (req, res) => {
+router.post('/:collId/update', ensureLogin.ensureLoggedIn(), (req, res) => {
+    const collId = req.params.collId;
     const { name, description } = req.body;
-    MovieCollection.findOneAndUpdate({ _id: collId }, { name, description })
+    MovieCollection.findOneAndUpdate({ _id: collId }, { name: name, description: description })
         .then(movieColl => {
-            console.log('Well done! Rak successfully updated!', movieColl);
-            res.redirect('/:id');
+            console.log('Well done! Rak successfully updated!');
+            res.redirect(`/edit-rak/${collId}`);
         })
         .catch(err => {
             console.error('Oops! Error while creating the rak', err);
@@ -35,6 +36,7 @@ router.post('/:collId/:movieId/delete', (req, res, next) => {
     const collId = req.params.collId;
     MovieCollection.findOneAndUpdate({ _id: collId }, { $pull: { _movie: movieId } }).then(MovieColl => {
         res.redirect(`/edit-rak/${collId}`);
+        console.log('Well done! Movie successfully deleted!');
     });
 });
 

@@ -1,11 +1,11 @@
-<p>Rak page</p>
-
-<div class="rakUpdateDetails">
+<div class="rakContents1">
+  {{collection}}
+  <h1>rak name: {{this.name}}</h1>
   <h2>Update your rak</h2>
-  <form action='/rak/update' method="post">
-    <input type="text" placeholder="rak name" name='name'>
-    <input type="text" placeholder="rak description" name='description'>
-    <button class="rakUpdateDetails" type="submit">Save your changes</button>
+  <form action='/edit-rak/{{id}}/update' method="POST">
+    <input type="text" placeholder="change name" name='name'>
+    <input type="text" placeholder="change description" name='description'>
+    <button id="rakUpdateDetails" type="submit">Save your changes</button>
   </form>
 </div>
 
@@ -15,7 +15,7 @@
 
 {{!-- Display rak's movies and delete button functionality --}}
 <div class="rakContents">
-  {{movie}}
+  {{!-- {{movie}} --}}
   {{#each movie}}
   <h3>{{this.title}}</h3>
   <p>{{this.genre_names}}</p>
