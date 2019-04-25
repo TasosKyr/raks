@@ -9,8 +9,8 @@ const MovieCollection = require('../models/MovieCollection');
 
 authRoutes.get('/signup', (req, res, next) => {
     let data = {
-        layout: false
-    }
+        //layout: false
+    };
     res.render('auth/signup', data);
 });
 
@@ -52,8 +52,8 @@ authRoutes.post('/signup', (req, res, next) => {
 
 authRoutes.get('/login', (req, res, next) => {
     let data = {
-        layout: false
-    }
+        //  layout: false
+    };
     res.render('auth/login', data);
     // { message: req.flash('error') }
 });
