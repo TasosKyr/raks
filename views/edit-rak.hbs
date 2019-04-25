@@ -1,8 +1,10 @@
 <p>You are now in the edit rak hbs</p>
 
-<h1>sss</h1>{{rak}}
-<div class="rakContents">
 
-  {{#each rak}}
-  <h1>{{this._movie}}</h1>
+<div class="rakContents">
+  {{movie}}
+  {{#each movie}}
+  <h1>{{this.title}}</h1>
+  <h3>{{this.overview}}</h3>
+  <img src="https://image.tmdb.org/t/p/w1280{{poster_path}}" alt="">
   {{/each}}
