@@ -3,6 +3,7 @@ const profileRouter = express.Router();
 const Identicon = require("identicon")
 const jsSHA = require("jssha");
 const MovieCollection = require('../models/MovieCollection');
+const Movie = require('../models/Movie');
 const User = require('../models/User');
 
 // Identicon Setup, unfinished
@@ -25,7 +26,5 @@ profileRouter.post('/search', (req, res, next) => {
 profileRouter.get('/:id', (req, res) => {
   MovieCollection.findById(req.params.id, (err, doc) => { })
 })
-
-
 
 module.exports = profileRouter;
