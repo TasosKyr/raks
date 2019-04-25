@@ -27,7 +27,7 @@ router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, nex
         axios
             .get(
                 `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                    req.query.search
+                req.query.search
                 }&page=1&include_adult=false`
             )
             .then(response => {
@@ -63,7 +63,7 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
             console.error('failed to render user collection', err);
         });
 });
-
+//remove rak
 router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
     console.log('hello from delete route');
     let collectionId = req.params.id;
@@ -76,6 +76,18 @@ router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
             console.error('failed to render user collection', err);
         });
 });
+//remove rak content
+router.post('/edit-rak/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
+    let movieId = req.params.id;
+    Movie.deleteOne({ _id: movieId })
+        .then(collection => {
+            console.log(collection);
+            res.redirect('/edit-rak/:id');
+        })
+        .catch(err => {
+            console.error('failed to delete item', err);
+        });
+});
 
 // Get API search results
 router.post('/search/:collectionId/:collectionName', (req, res, next) => {
@@ -83,7 +95,7 @@ router.post('/search/:collectionId/:collectionName', (req, res, next) => {
     axios
         .get(
             `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                req.body.search
+            req.body.search
             }&page=1&include_adult=false`
         )
         .then(response => {
@@ -216,7 +228,7 @@ router.post('/add/:collId', (req, res) => {
                 axios
                     .get(
                         `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                            req.query.search
+                        req.query.search
                         }&page=1&include_adult=false`
                     )
                     .then(response => {

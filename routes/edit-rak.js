@@ -16,9 +16,16 @@ router.get('/:id', (req, res) => {
           res.render("edit-rak", { movie })
         })
       //console.log(rak._movie, "rakobjectids")
-
     })
 
 });
+
+router.post('/profile/{{_id}}/delete', (req, res, next) => {
+  res.redirect('/search');
+  MovieCollection.create({
+    name: 'Rak 1',
+    _owner: user._id
+  });
+})
 
 module.exports = router;
