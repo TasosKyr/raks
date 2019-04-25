@@ -1,11 +1,28 @@
-<h2>{{user.username}}'s rak-room</h2>
+<h1>{{user.username}}'s rak-room</h1>
 
 {{#if user}}
+<div class="idcon">
+  {{renderId}}
+</div>
 <div>
-  <ul>Your raks:
-    <li>item</li>
-  </ul>
-  <button id="editRak" type="submit">edit</button>
+  <div class="profileRak">
+    {{#each collections}}
+    <a href="/edit-rak/{{this._id}}">{{this.name}}</a>
+    <p>{{description}}</p>
+    <div class="rakMovies">{{#each _movie}}
+      <p>bananabread</p>
+    </div>{{/each}}
+    <form action='/profile/{{_id}}/delete' method="POST">
+      <button id="editRak" type="submit">remove</button>
+    </form>
+  </div>{{/each}}
+  <a href="/create-rak">
+    <button id="newRak" type="submit">new rak</button>
+  </a>
+  </form>
+  {{!-- <form action="/search/{{this.moviecollections}}" method="GET"> --}}
+  <form action="/search/:userId">
+    <button id="goToSearch" type="submit">Search Page</button>
+  </form>
 </div>
 {{/if}}
-<button id="goToSearch" type="submit">Search Page</button>

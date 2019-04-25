@@ -1,14 +1,17 @@
 const express = require('express');
 const authRoutes = express.Router();
-const User = require('../models/user');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 const passport = require('passport');
 const ensureLogin = require('connect-ensure-login');
-//const router = express.Router();
+const MovieCollection = require('../models/MovieCollection');
 
 authRoutes.get('/signup', (req, res, next) => {
-    res.render('auth/signup');
+    let data = {
+        layout: false
+    }
+    res.render('auth/signup', data);
 });
 
 authRoutes.post('/signup', (req, res, next) => {
@@ -20,36 +23,39 @@ authRoutes.post('/signup', (req, res, next) => {
         return;
     }
 
-    User.findOne({ username })
-        .then(user => {
-            if (user !== null) {
-                res.render('auth/signup', { message: 'The username already exists' });
-                return;
-            }
+    User.findOne({ username }).then(user => {
+        if (user !== null) {
+            res.render('auth/signup', { message: 'The username already exists' });
+            return;
+        }
 
-            const salt = bcrypt.genSaltSync(bcryptSalt);
-            const hashPass = bcrypt.hashSync(password, salt);
+        const salt = bcrypt.genSaltSync(bcryptSalt);
+        const hashPass = bcrypt.hashSync(password, salt);
 
-            const newUser = new User({
-                username,
-                password: hashPass
-            });
-
-            newUser.save(err => {
-                if (err) {
-                    res.render('auth/signup', { message: 'Something went wrong' });
-                } else {
-                    res.redirect('/search');
-                }
-            });
-        })
-        .catch(error => {
-            next(error);
+        const newUser = new User({
+            username,
+            password: hashPass
         });
+
+        newUser.save((err, user) => {
+            console.log(user);
+            if (err) {
+                res.render('auth/signup', { message: 'Something went wrong' });
+            } else {
+                req.login(user, () => {
+                    res.redirect('/create-rak');
+                });
+            }
+        });
+    });
 });
 
 authRoutes.get('/login', (req, res, next) => {
-    res.render('auth/login', { message: req.flash('error') });
+    let data = {
+        layout: false
+    }
+    res.render('auth/login', data);
+    // { message: req.flash('error') }
 });
 
 authRoutes.post(
@@ -61,10 +67,6 @@ authRoutes.post(
         passReqToCallback: true
     })
 );
-
-authRoutes.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
-    res.render('profile', { user: req.user });
-});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
