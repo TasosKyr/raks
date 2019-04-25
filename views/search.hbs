@@ -1,4 +1,5 @@
-<div class="rakCreation">
+<div id="header" class="rakCreation">
+  <h2>Create a rak</h2>
   <form action='/profile/{{req.user._id}}' method="post"></form>
   <h2>{{MovieColl.name}}</h2>
   <h3>Your movies:</h3>
@@ -11,6 +12,11 @@
   <button class="addRak" type="submit">Save your rak</button>
   </form>
 </div>
+
+<div class="movies"></div>
+
+
+</form>
 
 <div class="search">
   <h3>Search</h3>

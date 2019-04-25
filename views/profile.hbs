@@ -7,10 +7,11 @@
 <div>
   <div class="profileRak">
     {{#each collections}}
-    <a href="/search/{{this._id}}">{{this.name}}</a>
+    <a href="/edit-rak/{{this._id}}">{{this.name}}</a>
     <p>{{description}}</p>
     <div class="rakMovies">{{#each _movie}}
-      <p>bananabread</p>
+      <p>{{this.title}}</p>
+      <p>a movie</p>
     </div>{{/each}}
     <form action='/profile/{{_id}}/delete' method="POST">
       <button id="editRak" type="submit">remove</button>
