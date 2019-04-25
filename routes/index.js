@@ -4,14 +4,19 @@ const axios = require('axios');
 const MovieCollection = require('../models/MovieCollection');
 const Movie = require('../models/Movie');
 const ensureLogin = require('connect-ensure-login');
+const User = require('../models/User');
 
 /* Get landing-page */
 router.get('/', (req, res, next) => {
-    res.render('index');
+    let data = {
+        layout: false
+    }
+    res.render('index', data);
 });
 
 // Get rak creation page
 router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    console.log("hello from create rak")
     res.render('create-rak');
 });
 
@@ -22,7 +27,7 @@ router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, nex
         axios
             .get(
                 `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                    req.query.search
+                req.query.search
                 }&page=1&include_adult=false`
             )
             .then(response => {
@@ -55,7 +60,45 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
             res.render('profile', { collections, user: req.user });
         })
         .catch(err => {
-            console.error('failed to render user collection', err);
+            console.error("failed to render user collection", err)
+        })
+});
+
+router.post("/profile/:id/delete", ensureLogin.ensureLoggedIn(), (req, res) => {
+    console.log("hello from delete route")
+    let collectionId = req.params.id
+    MovieCollection.deleteOne({ _id: collectionId })
+        .then(collection => {
+            console.log(collection)
+            res.redirect('/profile')
+        })
+        .catch(err => {
+            console.error("failed to render user collection", err)
+        })
+})
+
+// Get API search results
+router.post('/search/:collectionId/:collectionName', (req, res, next) => {
+    const { collectionId, collectionName } = req.params;
+    axios
+        .get(
+            `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
+            req.body.search
+            }&page=1&include_adult=false`
+        )
+        .then(response => {
+            const { data } = response;
+            let results = data.results;
+            console.log(results);
+            data.results.forEach(el => {
+                const genre_ids = el.genre_ids;
+                const genre_names = getIdName(genre_ids);
+                el.genre_names = genre_names;
+            });
+            res.render('search', { results, collectionId, collectionName });
+        })
+        .catch(err => {
+            console.error(err);
         });
 });
 
@@ -169,7 +212,7 @@ router.post('/add/:collId', (req, res) => {
             axios
                 .get(
                     `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                        req.query.search
+                    req.query.search
                     }&page=1&include_adult=false`
                 )
                 .then(response => {
