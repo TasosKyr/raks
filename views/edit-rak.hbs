@@ -13,7 +13,7 @@
   <p>{{this.vote_average}}</p>
   <p>{{this.overview}}</p>
   <img src="https://image.tmdb.org/t/p/w1280{{poster_path}}" alt="">
-  <form action='/profile/{{_id}}/delete' method="POST">
+  <form action='/edit-rak/{{../id}}/{{this._id}}/delete' method="POST">
     <button id="editRak" type="submit">remove</button>
   </form>
   {{/each}}

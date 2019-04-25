@@ -79,7 +79,7 @@ router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
         });
 });
 //remove rak content
-router.post('/edit-rak/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
+/* router.post('/edit-rak/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
     let movieId = req.params.id;
     Movie.deleteOne({ _id: movieId })
         .then(collection => {
@@ -89,7 +89,7 @@ router.post('/edit-rak/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => 
         .catch(err => {
             console.error('failed to delete item', err);
         });
-});
+}); */
 
 // Get API search results
 router.post('/search/:collectionId/:collectionName', (req, res, next) => {
@@ -208,7 +208,6 @@ const getIdName = arrIds => {
 router.post('/add/:collId', (req, res) => {
     const { collId } = req.params;
     const { id, title, genre_names, vote_average, overview, poster_path } = req.body;
-
     Movie.findOneAndUpdate(
         { id: id },
         {
