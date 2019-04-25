@@ -6,6 +6,8 @@ const Movie = require('../models/Movie');
 const ensureLogin = require('connect-ensure-login');
 const User = require('../models/User');
 
+let searchResult = undefined;
+
 /* Get landing-page */
 router.get('/', (req, res, next) => {
     let data = {
@@ -16,47 +18,49 @@ router.get('/', (req, res, next) => {
 
 // Get rak creation page
 router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    console.log('hello from create rak');
     res.render('create-rak');
 });
 
 // Get API search results
 router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, next) => {
     const { collectionId } = req.params;
-    MovieCollection.findOne({ _id: collectionId }).then(MovieColl => {
-        axios
-            .get(
-                `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                    req.query.search
-                }&page=1&include_adult=false`
-            )
-            .then(response => {
-                const { data } = response;
-                let results = data.results;
-                console.log(results);
-                data.results.forEach(el => {
-                    const genre_ids = el.genre_ids;
-                    const genre_names = getIdName(genre_ids);
-                    el.genre_names = genre_names;
+    MovieCollection.findOne({ _id: collectionId })
+        .populate({ path: '_movie', model: 'Movie' })
+        .then(MovieColl => {
+            console.log(MovieColl);
+            searchResult = req.query.search;
+            axios
+                .get(
+                    `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
+                        req.query.search
+                    }&page=1&include_adult=false`
+                )
+                .then(response => {
+                    const { data } = response;
+                    let results = data.results;
+
+                    data.results.forEach(el => {
+                        const genre_ids = el.genre_ids;
+                        const genre_names = getIdName(genre_ids);
+                        el.genre_names = genre_names;
+                    });
+
+                    res.render('search', {
+                        query: req.query.search,
+                        results,
+                        MovieColl
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
                 });
-                console.log('render');
-                res.render('search', {
-                    query: req.query.search,
-                    results,
-                    MovieColl
-                });
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    });
+        });
 });
 
 //Get profile page
 router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
     MovieCollection.find({ _owner: req.user._id })
         .then(collections => {
-            console.log({ collections });
             res.render('profile', { collections, user: req.user });
         })
         .catch(err => {
@@ -65,11 +69,9 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
 });
 
 router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
-    console.log('hello from delete route');
     let collectionId = req.params.id;
     MovieCollection.deleteOne({ _id: collectionId })
         .then(collection => {
-            console.log(collection);
             res.redirect('/profile');
         })
         .catch(err => {
@@ -89,7 +91,7 @@ router.post('/search/:collectionId/:collectionName', (req, res, next) => {
         .then(response => {
             const { data } = response;
             let results = data.results;
-            console.log(results);
+
             data.results.forEach(el => {
                 const genre_ids = el.genre_ids;
                 const genre_names = getIdName(genre_ids);
@@ -194,7 +196,6 @@ const getIdName = arrIds => {
 router.post('/add/:collId', (req, res) => {
     const { collId } = req.params;
     const { id, title, genre_names, vote_average, overview, poster_path } = req.body;
-    console.log(req.body);
 
     Movie.findOneAndUpdate(
         { id: id },
@@ -209,11 +210,10 @@ router.post('/add/:collId', (req, res) => {
         },
         { upsert: true, new: true }
     ).then(movie => {
-        console.log('movie', movie);
-
         MovieCollection.findOneAndUpdate({ _id: collId }, { $push: { _movie: movie._id } }).then(
             MovieColl => {
-                axios
+                res.redirect(`/search/${collId}?search=${searchResult}`);
+                /* axios
                     .get(
                         `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
                             req.query.search
@@ -229,13 +229,8 @@ router.post('/add/:collId', (req, res) => {
                             el.genre_names = genre_names;
                         });
                         console.log('render');
-                        /* res.render('search', {
-                        query: req.query.search,
-                        results,
-                        MovieColl
-                    }); */
                         res.render('search', { MovieColl, results });
-                    });
+                    }); */
             }
         );
     });
