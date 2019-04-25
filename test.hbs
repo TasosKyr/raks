@@ -1,0 +1,234 @@
+<div class="section">
+  <div class="sign-up">
+    <div class="signupHeader" <h2>Signup</h2>
+    </div>
+    <form>
+      <div class="sign-login">
+        <form action="/signup" method="POST" id="form-container">
+          <div class="signupTitles">
+
+            <input type="text" name="username" class="question" id="nme" required autocomplete="off" />
+            <label for="nme"><span>Username</span></label>
+
+            {{!-- <label for="username">Username</label>
+            <input id="username" type="text" name="username" placeholder="Your username"> --}}
+          </div>
+          <div class="signupTitles">
+            <input type="Password" name="Password" class="question" id="nme" required autocomplete="off" />
+            <label for="nme"><span>Password</span></label>
+
+            {{!--             <label for="password">Password</label>
+            <input id="password" type="password" name="password" placeholder="Your password"> --}}
+          </div>
+
+          {{#if message}}
+          <div class="error-message">{{ message }}</div>
+          {{/if}}
+
+          <div id="signupButton">
+            <button> Create your raks account</button>
+          </div>
+          <div id="signupExisting">
+            <p class="account-message">
+              Already using raks?
+              <a href="/login">Login</a>
+            </p>
+          </div>
+        </form>
+
+      </div>
+  </div>
+
+  <div>
+
+
+
+
+
+
+
+    .sign-up {
+    background-color: rgb(99, 112, 125, 0.7);
+    height: 70vh;
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    padding: 10px;
+    padding-bottom: 15px;
+    padding-top: 50px; */
+    }
+
+    .signupHeader {
+    font-size: 3em;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    }
+
+    .signupTitles {
+    font-size: 1.5em;
+    margin-bottom: 2vh;
+    }
+
+    #signupButton {
+    text-align: center;
+    }
+
+    #signupButton button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    }
+
+    #signupExisting {
+    text-align: center;
+    }
+    /*.sign-login {
+    height: 10px;
+    width: 12px;
+    }*/
+
+    input,
+    span,
+    label,
+    textarea {
+    font-family: 'Ubuntu', sans-serif;
+    display: block;
+    margin: 10px;
+    padding: 5px;
+    border: none;
+    font-size: 22px;
+    }
+
+    textarea:focus,
+    input:focus {
+    outline: 0;
+    }
+    /* Question */
+    /* TESTING */
+    input.question,
+    textarea.question {
+    font-size: 48px;
+    font-weight: 300;
+    border-radius: 2px;
+    margin: 0;
+    border: none;
+    width: 80%;
+    background: rgba(0, 0, 0, 0);
+    transition: padding-top 0.2s ease, margin-top 0.2s ease;
+    overflow-x: hidden; /* Hack to make "rows" attribute apply in Firefox. */
+    }
+    /* Underline and Placeholder */
+
+    input.question + label,
+    textarea.question + label {
+    display: block;
+    position: relative;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    width: 10%;
+    border-top: 1px solid red;
+    -webkit-transition: width 0.4s ease;
+    transition: width 0.4s ease;
+    height: 0px;
+    }
+
+    input.question:focus + label,
+    textarea.question:focus + label {
+    width: 80%;
+    }
+
+    input.question:focus,
+    input.question:valid {
+    padding-top: 35px;
+    }
+
+    textarea.question:valid,
+    textarea.question:focus {
+    margin-top: 35px;
+    }
+
+    input.question:focus + label > span,
+    input.question:valid + label > span {
+    top: -100px;
+    font-size: 22px;
+    color: black;
+    }
+
+    textarea.question:focus + label > span,
+    textarea.question:valid + label > span {
+    top: -150px;
+    font-size: 22px;
+    color: black;
+    }
+
+    input.question:valid + label,
+    textarea.question:valid + label {
+    border-color: green;
+    }
+
+    input.question:invalid,
+    textarea.question:invalid {
+    box-shadow: none;
+    }
+
+    input.question + label > span,
+    textarea.question + label > span {
+    font-weight: 300;
+    margin: 0;
+    position: absolute;
+    color: black;
+    font-size: 48px;
+    top: -66px;
+    left: 0px;
+    /* z-index: -1; */
+    -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+    transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+    }
+
+    input[type='submit'] {
+    -webkit-transition: opacity 0.2s ease, background 0.2s ease;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    display: block;
+    opacity: 0;
+    margin: 10px 0 0 0;
+    padding: 10px;
+    cursor: pointer;
+    }
+
+    input[type='submit']:hover {
+    background: #eee;
+    }
+
+    input[type='submit']:active {
+    background: #999;
+    }
+
+    input.question:valid ~ input[type='submit'],
+    textarea.question:valid ~ input[type='submit'] {
+    -webkit-animation: appear 1s forwards;
+    animation: appear 1s forwards;
+    }
+
+    input.question:invalid ~ input[type='submit'],
+    textarea.question:invalid ~ input[type='submit'] {
+    display: none;
+    }
+
+    @-webkit-keyframes appear {
+    100% {
+    opacity: 1;
+    }
+    }
+
+    @keyframes appear {
+    100% {
+    opacity: 1;
+    }
+    }

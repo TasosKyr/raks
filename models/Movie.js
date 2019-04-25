@@ -10,22 +10,22 @@ const moviesSchema = new Schema({
         type: String,
         required: true
     },
-    rating: {
+    vote_average: {
         type: Number
     },
-    description: {
+    overview: {
         type: String
     },
-    image: {
+    poster_path: {
         type: String
-    },
-    _movieCollection: {
+    }
+    /*   _movieCollection: {
         type: Schema.Types.ObjectId,
         ref: 'MovieCollection',
         required: true
-    }
+    } */
 });
 
-const Movie = mongoose.model('movie', moviesSchema);
+const Movie = mongoose.model('Movie', moviesSchema);
 
 module.exports = Movie;

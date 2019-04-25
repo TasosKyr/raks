@@ -148,6 +148,9 @@ app.use('/', index);
 const createRak = require('./routes/create-rak');
 app.use('/', createRak);
 
+const editRak = require('./routes/edit-rak');
+app.use('/edit-rak', editRak);
+
 const profileRouter = require('./routes/profile')
 app.use('/', profileRouter)
 
