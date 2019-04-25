@@ -1,13 +1,34 @@
-<div class="rakCreation">
+<div id="header" class="rakCreation">
+  <h2>Create a rak</h2>
   <form action='/profile/{{req.user._id}}' method="post"></form>
   <h2>{{MovieColl.name}}</h2>
   <h3>Your movies:</h3>
+</div>
+
+<div class="input-label">
+  <input type="text" placeholder="and give it a name" name='rakName'>
+
+  <form action='/search' method="post">
+    <input type="text" placeholder="I'm interested in..." name='search'>
+</div>
+<div class="movies">
+  <input type="checkbox" id="movies" name="movies">
+  <label for="movies">Movies</label>
+  <div id="search-button" <button class="itemSearch" type="submit">Search</button></div>
+  <div id="addrak-button" <button class="addItem" type="submit">Add to rak</button></div>
+  <h3>Your rak</h3>
+</div>
+<div class="ul-item">
   <ul class="cart">
     <li>Movies...</li>
   </ul>
-  <button class="addRak" type="submit">Save your rak</button>
-  </form>
+  <div class="rak-button"><button class="addRak" type="submit">save rak</button></div>
 </div>
+
+<div class="movies"></div>
+
+
+</form>
 
 <div class="search">
   <h3>Search</h3>
