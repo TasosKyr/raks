@@ -1,4 +1,13 @@
-<p>You are now in the edit rak hbs</p>
+<p>Rak page</p>
+
+<div class="rakUpdateDetails">
+  <h2>Update your rak</h2>
+  <form action='/rak/update' method="post">
+    <input type="text" placeholder="rak name" name='name'>
+    <input type="text" placeholder="rak description" name='description'>
+    <button class="rakUpdateDetails" type="submit">Save your changes</button>
+  </form>
+</div>
 
 <div class="redirectEdit">
   <button><a href="/search/{{id}}">add more movies</a></button>
