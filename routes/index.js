@@ -11,7 +11,7 @@ let searchResult = undefined;
 /* Get landing-page */
 router.get('/', (req, res, next) => {
     let data = {
-        layout: false
+        //layout: false
     };
     res.render('index', data);
 });
