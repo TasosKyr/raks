@@ -10,13 +10,13 @@ const User = require('../models/User');
 router.get('/', (req, res, next) => {
     let data = {
         layout: false
-    }
+    };
     res.render('index', data);
 });
 
 // Get rak creation page
 router.get('/create-rak', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    console.log("hello from create rak")
+    console.log('hello from create rak');
     res.render('create-rak');
 });
 
@@ -27,7 +27,7 @@ router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, nex
         axios
             .get(
                 `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                req.query.search
+                    req.query.search
                 }&page=1&include_adult=false`
             )
             .then(response => {
@@ -60,22 +60,22 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
             res.render('profile', { collections, user: req.user });
         })
         .catch(err => {
-            console.error("failed to render user collection", err)
-        })
+            console.error('failed to render user collection', err);
+        });
 });
 
-router.post("/profile/:id/delete", ensureLogin.ensureLoggedIn(), (req, res) => {
-    console.log("hello from delete route")
-    let collectionId = req.params.id
+router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
+    console.log('hello from delete route');
+    let collectionId = req.params.id;
     MovieCollection.deleteOne({ _id: collectionId })
         .then(collection => {
-            console.log(collection)
-            res.redirect('/profile')
+            console.log(collection);
+            res.redirect('/profile');
         })
         .catch(err => {
-            console.error("failed to render user collection", err)
-        })
-})
+            console.error('failed to render user collection', err);
+        });
+});
 
 // Get API search results
 router.post('/search/:collectionId/:collectionName', (req, res, next) => {
@@ -83,7 +83,7 @@ router.post('/search/:collectionId/:collectionName', (req, res, next) => {
     axios
         .get(
             `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-            req.body.search
+                req.body.search
             }&page=1&include_adult=false`
         )
         .then(response => {
@@ -190,11 +190,12 @@ const getIdName = arrIds => {
     return genreArray;
 };
 
-// Create movie in the database, add it to the rak and recalls API for results
+// Create movie in the database, add it in the rak and recall API for results
 router.post('/add/:collId', (req, res) => {
     const { collId } = req.params;
     const { id, title, genre_names, vote_average, overview, poster_path } = req.body;
     console.log(req.body);
+
     Movie.findOneAndUpdate(
         { id: id },
         {
@@ -203,37 +204,40 @@ router.post('/add/:collId', (req, res) => {
             genre_names,
             vote_average,
             overview,
-            poster_path,
-            _movieCollection: collId
+            poster_path
+            /*      _movieCollection: collId */
         },
         { upsert: true, new: true }
-    ).then(() => {
-        MovieCollection.findOne({ _id: collId }).then(MovieColl => {
-            axios
-                .get(
-                    `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                    req.query.search
-                    }&page=1&include_adult=false`
-                )
-                .then(response => {
-                    const { data } = response;
-                    let results = data.results;
-                    console.log(results);
-                    data.results.forEach(el => {
-                        const genre_ids = el.genre_ids;
-                        const genre_names = getIdName(genre_ids);
-                        el.genre_names = genre_names;
-                    });
-                    console.log('render');
-                    /* res.render('search', {
+    ).then(movie => {
+        console.log('movie', movie);
+
+        MovieCollection.findOneAndUpdate({ _id: collId }, { $push: { _movie: movie._id } }).then(
+            MovieColl => {
+                axios
+                    .get(
+                        `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
+                            req.query.search
+                        }&page=1&include_adult=false`
+                    )
+                    .then(response => {
+                        const { data } = response;
+                        let results = data.results;
+                        console.log(results);
+                        data.results.forEach(el => {
+                            const genre_ids = el.genre_ids;
+                            const genre_names = getIdName(genre_ids);
+                            el.genre_names = genre_names;
+                        });
+                        console.log('render');
+                        /* res.render('search', {
                         query: req.query.search,
                         results,
                         MovieColl
                     }); */
-                    res.render('search', { MovieColl, results });
-                });
-        });
-        console.log('Movie successfully created');
+                        res.render('search', { MovieColl, results });
+                    });
+            }
+        );
     });
 });
 

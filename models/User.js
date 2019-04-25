@@ -12,13 +12,13 @@ const userSchema = new Schema(
             required: true
         },
         googleId: String,
-        password: String,
-        movieCollection: [
+        password: String
+        /*  movieCollection: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'MovieCollection'
             }
-        ]
+        ] */
     },
     {
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
