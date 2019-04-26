@@ -26,9 +26,7 @@ profileRouter.post('/search', (req, res, next) => {
 });
 
 profileRouter.get('/:id', (req, res) => {
-
     MovieCollection.findById(req.params.id, (err, doc) => {});
 });
 
 module.exports = profileRouter;
-
