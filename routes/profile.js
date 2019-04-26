@@ -1,8 +1,9 @@
 const express = require('express');
 const profileRouter = express.Router();
-const Identicon = require('identicon');
+// const Identicon = require("identicon")
 const jsSHA = require('jssha');
 const MovieCollection = require('../models/MovieCollection');
+const Movie = require('../models/Movie');
 const User = require('../models/User');
 
 // Identicon Setup, unfinished
