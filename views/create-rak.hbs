@@ -1,4 +1,5 @@
-<h2>Create new rak</h2>
+{{!-- old one --}}
+{{!-- <h2>Create new rak</h2>
 
 <div class="rakCreation">
   <h2>Create a rak</h2>
@@ -8,3 +9,31 @@
     <button class="rakCreation" type="submit">Add your favorite movies</button>
   </form>
 </div>
+
+
+ --}}
+
+
+
+{{!-- new one --}}
+<div class="section">
+  <div class="sign-up">
+    <div class="signupHeader" <h2>Create new rak</h2>
+    </div>
+    <div class="sign-login">
+      <form action='/rak/create' method="post" id="form-container">
+        <div class="signupTitles">
+          <input type="text" name="name" class="question" id="nme" required autocomplete="off" />
+          <label for="rak name"><span>Rak Name</span></label>
+        </div>
+        <div class="signupTitles">
+          <input type="text" name="description" class="question" id="nme" required autocomplete="off" />
+          <label for="rak description"><span>Rak description</span></label>
+        </div>
+        <div id="signupButton">
+          <button type="submit"> Create your rak</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div>

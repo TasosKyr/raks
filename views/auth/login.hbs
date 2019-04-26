@@ -1,4 +1,6 @@
-<form action="/login" method="POST">
+{{!-- old --}}
+
+{{!-- <form action="/login" method="POST">
   <div>
     <label for="username">Username:</label>
     <input type="text" name="username">
@@ -18,3 +20,46 @@
 <a href="/signup">No account yet?</a>
 <br>
 <a href="/google">Login via google?</a>
+ --}}
+
+
+{{!-- new --}}
+<div class="section">
+  <div class="sign-up">
+    <div class="signupHeader" <h2>Login</h2>
+    </div>
+    <div class="sign-login">
+      <form action="/login" method="POST" id="form-container">
+        <div class="signupTitles">
+          <input type="text" name="username" class="question" id="nme" required autocomplete="off" />
+          <label for="username"><span>Username</span></label>
+        </div>
+
+        <div class="signupTitles">
+          <input type="password" name="password" class="question" id="nme" required autocomplete="off" />
+          <label for="password"><span>Password</span></label>
+        </div>
+
+
+
+        {{#if message}}
+        <div class="error-message">{{ message }}</div>
+        {{/if}}
+
+        <div id="signupButton">
+          <button> Login to your raks account</button>
+        </div>
+
+        <div id="signupExisting">
+          <p class="account-message">
+            You want to sign up instead?
+            <a href="/signup">Signup</a>
+          </p>
+        </div>
+
+      </form>
+    </div>
+    <br>
+    <a href="/google">Login via google?</a>
+  </div>
+  <div>

@@ -1,10 +1,8 @@
 body {
-	/* padding: 50px; */
-	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-	/* background: url("https://images.unsplash.com/photo-1500076898857-ad1ff4074429?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80") no-repeat center center fixed; */
-	background-size: cover;
-}
-
+  /* padding: 50px; */
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: url("https://images.unsplash.com/photo-1540630387975-98b9630cc103?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80") no-repeat center center fixed;
+  background-size: cover; }
 a {
 	color: #00b7ff;
 }
@@ -72,13 +70,14 @@ input,
 span,
 label,
 textarea {
-	font-family: "Ubuntu", sans-serif;
-	display: block;
-	margin: 10px;
-	padding: 5px;
-	border: none;
-	font-size: 22px;
-}
+  font-family: 'Ubuntu', sans-serif;
+  display: block;
+  margin: 10px;
+  padding: 5px;
+  border: none;
+  letter-spacing: normal;
+  font-size: 22px; }
+
 
 textarea:focus,
 input:focus {
@@ -263,4 +262,14 @@ textarea.question:invalid ~ input[type="submit"] {
 	width: 90px;
 }
 
+
+/*.rak-button {
+}*/
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 35%; }
+
 /*# sourceMappingURL=style.css.map */
+
