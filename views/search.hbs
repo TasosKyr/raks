@@ -1,6 +1,8 @@
 <div id="header" class="rakCreation">
   <h2>{{MovieColl.name}}</h2>
-  <h3>Your movies:</h3>
+  {{!--<div class="your-movies">
+    <h3>Your movies:</h3>
+  </div>--}}
   {{#each MovieColl._movie}}
   <div>
     {{this.title}}
@@ -9,35 +11,61 @@
   {{/each}}
 </div>
 
-<div>
+<div class="go-profile">
   <form action='/profile' method="get">
     <button type="submit">Go to you profile page</button>
   </form>
 </div>
 
 <div class="search">
-  <h3>Search</h3>
   <form action='/search/{{MovieColl._id}}' method="get">
-    <input type="text" placeholder="I'm interested in..." name='search'>
+    <div id="interested-input"><input type="text" placeholder="I'm interested in..." name='search'></div>
     <button class="itemSearch" type="submit">Search</button>
-    <div class="movies"></div>
-  </form>
-
 </div>
+<div class="movies"></div>
+</form>
+
+{{!-- 
 {{#if results}}
 {{#each results}}
 <div class="itemResults">
   <h3>{{this.title}}</h3>
-  {{!-- {{#if results}}
-{{#each ressults}} --}}
-  <p>{{this.genre_names}}</p>
-  {{!-- {{/each}}
-{{/if}} --}}
-  <p>{{this.vote_average}}</p>
-  <p>{{this.overview}}</p>
-  <img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img>
+<p>{{this.genre_names}}</p>
+<p>{{this.vote_average}}</p>
+<p>{{this.overview}}</p>
+<img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}"> </img>
 
+<form action='/add/{{../MovieColl._id}}' method="post">
+  <input type="hidden" name="query" value="{{../query}}">
+  <input type="hidden" name="id" value="{{this.id}}">
+  <input type="hidden" name="title" value="{{this.title}}">
+  <input type="hidden" name="genre_names" value="{{this.genre_names}}">
+  <input type="hidden" name="vote_average" value="{{this.vote_average}}">
+  <input type="hidden" name="overview" value="{{this.overview}}">
+  <input type="hidden" name="poster_path" value="{{this.poster_path}}">
+  <button class="addItem" type="submit">Add movie to your rak</button>
+</form>
+</div> {{/each}} {{/if}}
+  --}}
+
+<div class="row ">
+  {{#if results}}
+  {{#each results}}
   <form action='/add/{{../MovieColl._id}}' method="post">
+    <div class="col-sm-4 mb-4">
+      <div class="card  " style="width: 18rem;">
+        <img class="card-img-top" src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          {{!-- <p class="card-text">{{this.overview}}</p> --}}
+          {{!-- <p class="card-text">{{this.genre_names}}</p> --}}
+          <p class="card-text">Rating: {{this.vote_average}}</p>
+          <button class="btn btn-primary" type="submit">Add movie to your rak</button>
+        </div>
+      </div>
+    </div>
+
+
     <input type="hidden" name="query" value="{{../query}}">
     <input type="hidden" name="id" value="{{this.id}}">
     <input type="hidden" name="title" value="{{this.title}}">
@@ -45,6 +73,7 @@
     <input type="hidden" name="vote_average" value="{{this.vote_average}}">
     <input type="hidden" name="overview" value="{{this.overview}}">
     <input type="hidden" name="poster_path" value="{{this.poster_path}}">
-    <button class="addItem" type="submit">Add movie to your rak</button>
   </form>
-</div> {{/each}} {{/if}}
+
+  {{/each}} {{/if}}
+</div>

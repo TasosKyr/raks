@@ -14,12 +14,12 @@
       <p>{{this.title}}</p>
     </div>{{/each}}
     <form action='/profile/{{_id}}/delete' method="POST">
-      <button id="editRak" type="submit">remove</button>
+      <div class="remove-2"><button id="editRak" type="submit">remove</button></div>
     </form>
     {{/each}}
   </div>
   <a href="/create-rak">
-    <button id="newRak" type="submit">new rak</button>
+    <div class="new-rak"> <button id="newRak" type="submit">new rak</button></div>
   </a>
   </form>
 </div>
