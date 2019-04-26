@@ -1,26 +1,22 @@
-<h1>{{user.username}}'s rak-room</h1>
-
-{{#if user}}
-<div class="idcon">
-  {{renderId}}
-</div>
-<div>
-  <div class="profileRak">
+<div class="profile-background">
+  <h1>{{user.username}}'s raks</h1>
+  {{#if user}}
+  <div class="idcon">
+  </div>
+  <div class="profile-cards">
     {{#each collections}}
-    <a href="/edit-rak/{{this._id}}">{{this.name}}</a>
-    <p>{{description}}</p>
-    <div class="rakMovies">
-      {{#each _movie}}
-      <p>{{this.title}}</p>
-    </div>{{/each}}
-    <form action='/profile/{{_id}}/delete' method="POST">
-      <button id="editRak" type="submit">remove</button>
-    </form>
+    <div class="profile-card card" style="width: 18rem;">
+      <img class="card-img-top" src="/images/rakimageprofile.jpeg" alt="rak profil image">
+      <div class="card-body">
+        <h5 class="card-title">{{this.name}}</h5>
+        <p class="card-text">{{description}}</p>
+        <a href="/edit-rak/{{this._id}}" class="btn btn-primary">View {{this.name}}</a>
+        <form action='/profile/{{_id}}/delete' method="POST">
+          <button id="editRak" type="submit">Delete {{this.name}}</button>
+        </form>
+      </div>
+    </div>
     {{/each}}
   </div>
-  <a href="/create-rak">
-    <button id="newRak" type="submit">new rak</button>
-  </a>
-  </form>
+  {{/if}}
 </div>
-{{/if}}
