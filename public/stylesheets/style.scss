@@ -1,6 +1,7 @@
 body {
     /* padding: 50px; */
     font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+
     background: url('https://images.unsplash.com/photo-1502622796232-e88458466c33?ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80')
         no-repeat center center fixed;
 
@@ -392,4 +393,21 @@ textarea.question:invalid ~ input[type='submit'] {
     width: 20vh;
     font-size: 15px;
     margin-left: 15px;
+}
+.profile-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 2vw 2vh;
+    padding: 2vw 2vh;
+}
+
+.profile-card {
+    margin: 2vw 2vh;
+}
+
+.profile-background {
+    color: #2f4858;
+    background-color: #e43c57;
+    position: absolute;
 }
