@@ -1,12 +1,21 @@
-<p>You are now in the edit rak hbs</p>
+<div class="rakContents1">
+  {{collection}}
+  <h1>rak name: {{this.name}}</h1>
+  <h2>Update your rak</h2>
+  <form action='/edit-rak/{{id}}/update' method="POST">
+    <input type="text" placeholder="change name" name='name'>
+    <input type="text" placeholder="change description" name='description'>
+    <button id="rakUpdateDetails" type="submit">Save your changes</button>
+  </form>
+</div>
 
 <div class="redirectEdit">
-  <button><a href="/search/{{id}}">add more movies</a></button>
+  <button><a href="/search/{{id}}">Add more movies</a></button>
 </div>
 
 {{!-- Display rak's movies and delete button functionality --}}
 <div class="rakContents">
-  {{movie}}
+  {{!-- {{movie}} --}}
   {{#each movie}}
   <h3>{{this.title}}</h3>
   <p>{{this.genre_names}}</p>
@@ -14,7 +23,7 @@
   <p>{{this.overview}}</p>
   <img src="https://image.tmdb.org/t/p/w1280{{poster_path}}" alt="">
   <form action='/edit-rak/{{../id}}/{{this._id}}/delete' method="POST">
-    <button id="editRak" type="submit">remove</button>
+    <button id="editRak" type="submit">Remove</button>
   </form>
   {{/each}}
 </div>

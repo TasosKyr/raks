@@ -9,21 +9,18 @@
     {{#each collections}}
     <a href="/edit-rak/{{this._id}}">{{this.name}}</a>
     <p>{{description}}</p>
-    <div class="rakMovies">{{#each _movie}}
+    <div class="rakMovies">
+      {{#each _movie}}
       <p>{{this.title}}</p>
-      <p>a movie</p>
     </div>{{/each}}
     <form action='/profile/{{_id}}/delete' method="POST">
       <button id="editRak" type="submit">remove</button>
     </form>
-  </div>{{/each}}
+    {{/each}}
+  </div>
   <a href="/create-rak">
     <button id="newRak" type="submit">new rak</button>
   </a>
-  </form>
-  {{!-- <form action="/search/{{this.moviecollections}}" method="GET"> --}}
-  <form action="/search/:userId">
-    <button id="goToSearch" type="submit">Search Page</button>
   </form>
 </div>
 {{/if}}
