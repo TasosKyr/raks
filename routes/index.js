@@ -32,7 +32,7 @@ router.get('/search/:collectionId', ensureLogin.ensureLoggedIn(), (req, res, nex
             axios
                 .get(
                     `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                    req.query.search
+                        req.query.search
                     }&page=1&include_adult=false`
                 )
                 .then(response => {
@@ -97,7 +97,7 @@ router.post('/search/:collectionId/:collectionName', (req, res, next) => {
     axios
         .get(
             `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-            req.body.search
+                req.body.search
             }&page=1&include_adult=false`
         )
         .then(response => {
@@ -221,7 +221,7 @@ router.post('/add/:collId', (req, res) => {
         },
         { upsert: true, new: true }
     ).then(movie => {
-        MovieCollection.findOneAndUpdate({ _id: collId }, { $push: { _movie: movie._id } }).then(
+        MovieCollection.findOneAndUpdate({ _id: collId }, { $addToSet: { _movie: movie._id } }).then(
             MovieColl => {
                 res.redirect(`/search/${collId}?search=${searchResult}`);
                 /* axios
