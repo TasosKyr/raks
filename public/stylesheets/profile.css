@@ -1,0 +1,17 @@
+.profile-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 2vw 2vh;
+    padding: 2vw 2vh;
+}
+
+.profile-card {
+    margin: 2vw 2vh;
+}
+
+.profile-background {
+    color: #2f4858;
+    background-color: #e43c57;
+    position: absolute;
+}

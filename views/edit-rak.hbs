@@ -1,4 +1,4 @@
-<div class="rakContents1">
+{{!-- <div class="rakContents1">
   {{collection}}
   <h1>rak name: {{this.name}}</h1>
   <h2>Update your rak</h2>
@@ -11,11 +11,10 @@
 
 <div class="redirectEdit">
   <button><a href="/search/{{id}}">Add more movies</a></button>
-</div>
+</div> --}}
 
 {{!-- Display rak's movies and delete button functionality --}}
-<div class="rakContents">
-  {{!-- {{movie}} --}}
+{{!-- <div class="rakContents">
   {{#each movie}}
   <h3>{{this.title}}</h3>
   <p>{{this.genre_names}}</p>
@@ -23,7 +22,43 @@
   <p>{{this.overview}}</p>
   <img src="https://image.tmdb.org/t/p/w1280{{poster_path}}" alt="">
   <form action='/edit-rak/{{../id}}/{{this._id}}/delete' method="POST">
-    <button id="editRak" type="submit">Remove</button>
+    <button id="editRak" type="submit">Delete</button>
   </form>
   {{/each}}
+</div> --}}
+
+
+
+<div class="profile-background">
+  {{!-- {{#if user}} --}}
+  <div class="rakContents1">
+    {{collection}}
+    <h2>Update your rak</h2>
+    <form action='/edit-rak/{{id}}/update' method="POST">
+      <input type="text" placeholder="change name" name='name'>
+      <input type="text" placeholder="change description" name='description'>
+      <button id="rakUpdateDetails" type="submit">Save your changes</button>
+    </form>
+  </div>
+  <div class="redirectEdit">
+    <button><a href="/search/{{id}}">Add more movies</a></button>
+  </div>
+
+  <div class="profile-cards">
+    {{#each movie}}
+    <div class="profile-card card" style="width: 18rem;">
+      <img class="card-img-top" src="https://image.tmdb.org/t/p/w1280{{poster_path}}" alt="movie poster">
+      <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <p class="card-text">{{this.genre_names}}</p>
+        <p class="card-text">{{this.vote_average}}</p>
+        <p class="card-text">{{this.overview}}</p>
+        <form action='/profile/{{_id}}/delete' method="POST">
+          <button id="editRak" type="submit">Delete {{this.title}}</button>
+        </form>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{!--  {{/if}} --}}
 </div>
