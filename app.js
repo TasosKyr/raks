@@ -153,5 +153,6 @@ app.use('/edit-rak', editRak);
 
 const profileRouter = require('./routes/profile');
 app.use('/', profileRouter);
+hbs.registerPartials(__dirname + '/views/partials');
 
 module.exports = app;

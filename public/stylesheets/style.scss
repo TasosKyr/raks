@@ -1,7 +1,7 @@
 body {
     /* padding: 50px; */
     font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
-    background: url('https://images.unsplash.com/photo-1500076898857-ad1ff4074429?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80')
+    background: url('https://images.unsplash.com/photo-1540630387975-98b9630cc103?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80')
         no-repeat center center fixed;
 
     background-size: cover;
@@ -80,6 +80,7 @@ textarea {
     margin: 10px;
     padding: 5px;
     border: none;
+    letter-spacing: normal;
     font-size: 22px;
 }
 
@@ -264,5 +265,30 @@ textarea.question:invalid ~ input[type='submit'] {
     width: 90px;
 }
 
-.rak-button {
+/*.rak-button {
+}*/
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 35%;
+}
+
+.profile-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 2vw 2vh;
+    padding: 2vw 2vh;
+}
+
+.profile-card {
+    margin: 2vw 2vh;
+}
+
+.profile-background {
+    color: #2f4858;
+    background-color: #e43c57;
+    position: absolute;
 }
