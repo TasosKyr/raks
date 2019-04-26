@@ -67,7 +67,7 @@ router.get('/profile', ensureLogin.ensureLoggedIn(), (req, res) => {
             console.error('failed to render user collection', err);
         });
 });
-
+//remove rak
 router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
     let collectionId = req.params.id;
     MovieCollection.deleteOne({ _id: collectionId })
@@ -78,6 +78,18 @@ router.post('/profile/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
             console.error('failed to render user collection', err);
         });
 });
+//remove rak content
+/* router.post('/edit-rak/:id/delete', ensureLogin.ensureLoggedIn(), (req, res) => {
+    let movieId = req.params.id;
+    Movie.deleteOne({ _id: movieId })
+        .then(collection => {
+            console.log(collection);
+            res.redirect('/edit-rak/:id');
+        })
+        .catch(err => {
+            console.error('failed to delete item', err);
+        });
+}); */
 
 // Get API search results
 router.post('/search/:collectionId/:collectionName', (req, res, next) => {
@@ -196,7 +208,6 @@ const getIdName = arrIds => {
 router.post('/add/:collId', (req, res) => {
     const { collId } = req.params;
     const { id, title, genre_names, vote_average, overview, poster_path } = req.body;
-
     Movie.findOneAndUpdate(
         { id: id },
         {
@@ -210,13 +221,13 @@ router.post('/add/:collId', (req, res) => {
         },
         { upsert: true, new: true }
     ).then(movie => {
-        MovieCollection.findOneAndUpdate({ _id: collId }, { $push: { _movie: movie._id } }).then(
+        MovieCollection.findOneAndUpdate({ _id: collId }, { $addToSet: { _movie: movie._id } }).then(
             MovieColl => {
                 res.redirect(`/search/${collId}?search=${searchResult}`);
                 /* axios
                     .get(
                         `https://api.themoviedb.org/3/search/movie?api_key=3fce71989b0f48b13d9b620ecc6d2d2a&language=en-US&query=${
-                            req.query.search
+                        req.query.search
                         }&page=1&include_adult=false`
                     )
                     .then(response => {
