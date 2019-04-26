@@ -5,18 +5,22 @@
   </div>
   <div class="profile-cards">
     {{#each collections}}
-    <div class="profile-card card" style="width: 18rem;">
-      <img class="card-img-top" src="/images/rakimageprofile.jpeg" alt="rak profil image">
-      <div class="card-body">
-        <h5 class="card-title">{{this.name}}</h5>
-        <p class="card-text">{{description}}</p>
-        <a href="/edit-rak/{{this._id}}" class="btn btn-primary">View {{this.name}}</a>
-        <form action='/profile/{{_id}}/delete' method="POST">
-          <button id="editRak" type="submit">Delete {{this.name}}</button>
-        </form>
-      </div>
-    </div>
+
+    <a href="/edit-rak/{{this._id}}">{{this.name}}</a>
+    <p>{{description}}</p>
+    <div class="rakMovies">
+      {{#each _movie}}
+      <p>{{this.title}}</p>
+    </div>{{/each}}
+    <form action='/profile/{{_id}}/delete' method="POST">
+      <div class="remove-2"><button id="editRak" type="submit">remove</button></div>
+    </form>
     {{/each}}
   </div>
-  {{/if}}
+  <a href="/create-rak">
+    <div class="new-rak"> <button id="newRak" type="submit">new rak</button></div>
+  </a>
+  </form>
 </div>
+{{/if}}
+
